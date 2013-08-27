@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="navbar navbar-inverse navbar-default">
+      <form class="navbar-form navbar-left" role="search" ng-submit="doSubmit()">
+        <div class="input-group">
+          <input class="form-control" placeholder="Search" type="text" ng-model="filterMovie">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+          </span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row gallery-movie">
+  <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"  ng-repeat="movie in movies">
+    <div class="thumbnail">
+
+      <img class="gallery-movie-poster" ng-src="{{movie.poster.cover}}" alt="poster">
+
+      <div class="caption">
+        <strong class="gallery-movie-title">{{movie.title}} ({{movie.year}})</strong>
+        <p>Director: {{movie.directors[0]}}</p>
+        <hr>
+        <div class="btn-group gallery-movie-ctrl">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+            {{getStatusMovie(movie.imdb_id)}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 0)">Not Watched</button></li>
+           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 1)">Watched</button></li>
+           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 2)">Want Watch</button></li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
