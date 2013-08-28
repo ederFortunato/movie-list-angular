@@ -3,8 +3,16 @@
 /* Filters */
 
 angular.module('myApp.filters', []).
-  filter('interpolate', ['version', function(version) {
+  filter('statusMovieStr', [function() {
     return function(text) {
-      return String(text).replace(/\%VERSION\%/mg, version);
-    }
+      var status = ['Not Watched', 'Watched', 'Want Watch'];
+      return status[text];
+    };
+  }])
+
+  .filter('statusMovieColor', [function() {
+    return function(text) {
+      var status = ['default', 'success', 'warning'];
+      return status[text];
+    };
   }]);

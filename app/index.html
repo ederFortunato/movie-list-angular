@@ -2,7 +2,7 @@
 <html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
-  <title>My AngularJS App</title>
+  <title>Movie List Angular</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"/>
@@ -11,15 +11,15 @@
 </head>
 <body>
 
-  <div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar navbar-default navbar-fixed-top" ng-controller="MenuCtrl">
     <div class="container">
       <div class="navbar-header">
         <a class="navbar-brand">Movie List Angular</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#/allmovies">Movies</a></li>
-          <li><a href="#/mymovies">My Movies</a></li>
+          <li ng-class="munuActive.allmovies"><a ng-click="setMenu('allmovies')" href="#/allmovies">Movies</a></li>
+          <li ng-class="munuActive.mymovies" ><a ng-click="setMenu('mymovies')" href="#/mymovies">My Movies</a></li>
         </ul>
       </div>
     </div>
@@ -28,11 +28,11 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <div ng-view>v</div>
+        <div ng-view></div>
       </div>
     </div>
   </div>
-  
+
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   -->

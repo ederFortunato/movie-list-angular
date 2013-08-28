@@ -1,1 +1,69 @@
-My
+<div ng-init="viewActive='mymovies'"></div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="navbar navbar-inverse navbar-default">
+      <div class="navbar-form">
+        <div class="btn-group" >
+          <label class="btn btn-default">
+            <input type="radio" ng-model="filterMovie.my_status" value=""> All
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" ng-model="filterMovie.my_status" value="1"> Watched
+          </label>
+          <label class="btn btn-default">
+            <input type="radio" ng-model="filterMovie.my_status" value="2"> Want Watch
+          </label>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="progress progress-striped active " ng-show="isLoading" >
+  <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span class="sr-only">Loading</span>
+  </div>
+</div>
+
+<table class="table table-bordered table-condensed table-striped table-responsive table-hover" ng-hide="isLoading" >
+  <thead>
+    <tr>
+      <th>Movie</th>
+      <th>Status</th>
+      <th>Rating</th>
+      <th class="pull-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="movie in mymovies |  filter:filterMovie">
+      <td>
+        {{movie.title}} ({{movie.year}})
+      </td>
+      <td class="col-lg-2">
+        <div class="btn-group gallery-movie-ctrl">
+          <button class="btn btn-{{movie.my_status | statusMovieColor}} dropdown-toggle" type="button" data-toggle="dropdown">
+            {{movie.my_status | statusMovieStr}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 0)">Not Watched</button></li>
+           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 1)">Watched</button></li>
+           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 2)">Want Watch</button></li>
+          </ul>
+        </div>
+      </td>
+      <td class="col-lg-2">
+        <span class="rating">
+          <span class="star {{getActiveRating(movie.my_rating, 1)}}" ng-click="changeRating(movie.imdb_id, 1)" ></span>
+          <span class="star {{getActiveRating(movie.my_rating, 2)}}" ng-click="changeRating(movie.imdb_id, 2)" ></span>
+          <span class="star {{getActiveRating(movie.my_rating, 3)}}" ng-click="changeRating(movie.imdb_id, 3)" ></span>
+          <span class="star {{getActiveRating(movie.my_rating, 4)}}" ng-click="changeRating(movie.imdb_id, 4)" ></span>
+          <span class="star {{getActiveRating(movie.my_rating, 5)}}" ng-click="changeRating(movie.imdb_id, 5)" ></span>
+        </span>
+      </td>
+      <td class="actionEdit col-lg-1">
+        <button class="btn btn-danger " ng-click="removeMovie(movie.imdb_id)">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
