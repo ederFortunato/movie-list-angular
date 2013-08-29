@@ -55,7 +55,6 @@ angular.module('myApp.controllers', ['localStorage']).
     };
 
     $scope.changeStatusMovie = function(idMovie, status){
-
       var lsMovies = $store.get('lsMyMoviesABC');
       if(lsMovies[idMovie]){
         lsMovies[idMovie].my_status = status;
@@ -63,6 +62,12 @@ angular.module('myApp.controllers', ['localStorage']).
         lsMovies[idMovie] = {my_status: status, my_rating: 0};
       }
       $store.set('lsMyMoviesABC', lsMovies);
+
+      for (var i = $scope.movies.length - 1; i >= 0; i--) {
+        if($scope.movies[i].imdb_id == idMovie){
+          $scope.movies[i].my_status = status;
+        }
+      }
     };
 
   }])
@@ -126,6 +131,27 @@ angular.module('myApp.controllers', ['localStorage']).
         lsMovies[idMovie] = {my_status: 0, my_rating: stars};
       }
       $store.set('lsMyMoviesABC', lsMovies);
+
+      for (var i = $scope.mymovies.length - 1; i >= 0; i--) {
+        if($scope.mymovies[i].imdb_id == idMovie){
+          $scope.mymovies[i].my_rating = stars;
+        }
+      }
+    };
+
+    $scope.changeStatusMovie = function(idMovie, status){
+      var lsMovies = $store.get('lsMyMoviesABC');
+      if(lsMovies[idMovie]){
+        lsMovies[idMovie].my_status = status;
+      }else{
+        lsMovies[idMovie] = {my_status: status, my_rating: 0};
+      }
+      $store.set('lsMyMoviesABC', lsMovies);
+      for (var i = $scope.mymovies.length - 1; i >= 0; i--) {
+        if($scope.mymovies[i].imdb_id == idMovie){
+          $scope.mymovies[i].my_status = status;
+        }
+      }
     };
 
     $scope.removeMovie = function(idMovie){
@@ -134,6 +160,13 @@ angular.module('myApp.controllers', ['localStorage']).
         delete lsMovies[idMovie];
       }
       $store.set('lsMyMoviesABC', lsMovies);
+
+      for (var i = $scope.mymovies.length - 1; i >= 0; i--) {
+        if($scope.mymovies[i].imdb_id == idMovie){
+          $scope.mymovies.splice(i, 1);
+          break;
+        }
+      }
     };
 
   }]);
