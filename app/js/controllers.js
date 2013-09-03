@@ -10,26 +10,24 @@ angular.module('myApp.controllers', ['localStorage']).
     $scope.munuActive = current;
   }])
 
-  .controller('AllMoviesCtrl',  ['$scope', '$http', 'myMoviesService', function($scope, $http, myMoviesService) {
+  .controller('AllMoviesCtrl',  ['$scope', 'myMoviesService', 'imdbService', function($scope, myMoviesService, imdbService) {
 
     $scope.isLoading = false;
 
     $scope.doSubmit = function(){
-      $scope.isLoading = true;
-
-      var urlserver = 'server/proxy.php?q=' + $scope.filterMovie;
-      $http.get(urlserver)
-        .success(function(data) {
-          for (var i = data.length - 1; i >= 0; i--) {
-            data[i].my_status = myMoviesService.getStatus(data[i].imdb_id);
-            data[i].my_rating = myMoviesService.getRating(data[i].imdb_id);
-          }
+      var parans = {
+        q: $scope.filterMovie,
+        success: function(data){
           $scope.movies = data;
           $scope.isLoading = false;
-        })
-        .error(function(data, status, headers, config) {
+        },
+        error: function(data){
           $scope.isLoading = false;
-        });
+        }
+      };
+
+      $scope.isLoading = true;
+      imdbService.findMovies(parans);
     };
 
     $scope.changeStatusMovie = function(idMovie, status){
@@ -43,32 +41,24 @@ angular.module('myApp.controllers', ['localStorage']).
     };
   }])
 
-  .controller('MyMoviesCtrl', ['$scope', '$http', 'myMoviesService', function($scope, $http, myMoviesService) {
+  .controller('MyMoviesCtrl', ['$scope', 'myMoviesService', 'imdbService', function($scope, myMoviesService, imdbService) {
     $scope.filterMovie = {my_status: ''};
 
-    var ids = myMoviesService.getAllMy();
-    var myMovies = '';
-    for (var prop in ids) {
-      if (ids.hasOwnProperty(prop)) {
-        myMovies += prop + ',';
-      }
-    }
-    myMovies = myMovies.substr(0, myMovies.length-1);
-    var urlserver = 'server/proxy.php?ids=' + myMovies;
+    var idsMovies = myMoviesService.getAllIDs();
 
-    $scope.isLoading = true;
-    $http.get(urlserver)
-      .success(function(data) {
-        for (var i = data.length - 1; i >= 0; i--) {
-          data[i].my_status = myMoviesService.getStatus(data[i].imdb_id);
-          data[i].my_rating = myMoviesService.getRating(data[i].imdb_id);
-        }
+    var parans = {
+      ids: idsMovies,
+      success: function(data){
         $scope.mymovies = data;
         $scope.isLoading = false;
-      })
-      .error(function(data, status, headers, config) {
+      },
+      error: function(data){
         $scope.isLoading = false;
-      });
+      }
+    };
+
+    $scope.isLoading = true;
+    imdbService.getMovies(parans);
 
     $scope.getActiveRating = function(a, b){
        return a == b ? 'selectedStar' : '';
@@ -86,7 +76,6 @@ angular.module('myApp.controllers', ['localStorage']).
           $scope.mymovies[i].my_rating = stars;
         }
       }
-
     };
 
     $scope.changeStatusMovie = function(idMovie, status){

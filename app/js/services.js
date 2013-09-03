@@ -16,6 +16,17 @@ angular.module('myApp.services', ['localStorage']).
         return $store.get('lsMyMoviesABC');
     };
 
+    this.getAllIDs = function() {
+      var lsMovies = _self.getAllMy();
+      var idsMovies = '';
+      for (var prop in lsMovies) {
+        if (lsMovies.hasOwnProperty(prop)) {
+          idsMovies += prop + ',';
+        }
+      }
+      return idsMovies.substr(0, idsMovies.length - 1);
+    };
+
     this.getRating = function(idMovie){
       var lsMovies = _self.getAllMy();
       var current = lsMovies.hasOwnProperty(idMovie) ? lsMovies[idMovie].my_rating : null;
@@ -55,4 +66,36 @@ angular.module('myApp.services', ['localStorage']).
       }
       $store.set('lsMyMoviesABC', lsMovies);
     };
-  });
+  })
+  .service('imdbService', ['$http', '$store', 'myMoviesService', function($http, $store, myMoviesService) {
+    this.findMovies = function(args){
+      var urlserver = 'server/proxy.php?q=' + args.q;
+      $http.get(urlserver)
+        .success(function(data) {
+          for (var i = data.length - 1; i >= 0; i--) {
+            data[i].my_status = myMoviesService.getStatus(data[i].imdb_id);
+            data[i].my_rating = myMoviesService.getRating(data[i].imdb_id);
+          }
+          args.success(data);
+        })
+        .error(function(data, status, headers, config) {
+          args.error(data);
+        });
+    };
+
+    this.getMovies = function(args){
+      var urlserver = 'server/proxy.php?ids=' + args.ids;
+      $http.get(urlserver)
+        .success(function(data) {
+          for (var i = data.length - 1; i >= 0; i--) {
+            data[i].my_status = myMoviesService.getStatus(data[i].imdb_id);
+            data[i].my_rating = myMoviesService.getRating(data[i].imdb_id);
+          }
+          args.success(data);
+        })
+        .error(function(data, status, headers, config) {
+          args.error(data);
+        });
+    };
+
+  }]);
