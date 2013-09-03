@@ -39,16 +39,7 @@
         {{movie.title}} ({{movie.year}})
       </td>
       <td class="col-lg-2">
-        <div class="btn-group gallery-movie-ctrl">
-          <button class="btn btn-{{movie.my_status | statusMovieColor}} dropdown-toggle" type="button" data-toggle="dropdown">
-            {{movie.my_status | statusMovieStr}} <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 0)">Not Watched</button></li>
-           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 1)">Watched</button></li>
-           <li><button class="btn btn-link" ng-click="changeStatusMovie(movie.imdb_id, 2)">Want Watch</button></li>
-          </ul>
-        </div>
+        <div st-combo-status="{{movie.my_status}}" st-combo-id-movie="{{movie.imdb_id}}" st-combo-on-change="changeStatusMovie(idMovie, status)"></div>
       </td>
       <td class="col-lg-2">
         <span class="rating">
