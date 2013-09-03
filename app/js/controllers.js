@@ -17,22 +17,7 @@ angular.module('myApp.controllers', ['localStorage']).
 
   }])
 
-  .controller('AllMoviesCtrl',  ['$scope', '$http', '$store', function($scope, $http, $store) {
-
-    var getStatusMovie = function(idMovie){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      var current = lsMovies.hasOwnProperty(idMovie) ? lsMovies[idMovie].my_status : null;
-      return current ? current : 0;
-    };
-
-    var getRatingMovie = function(idMovie){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      var current = lsMovies.hasOwnProperty(idMovie) ? lsMovies[idMovie].my_rating : null;
-      return current ? current : 0;
-    };
-
-    if($store.get('lsMyMoviesABC') === null)
-      $store.set('lsMyMoviesABC', {});
+  .controller('AllMoviesCtrl',  ['$scope', '$http', 'myMoviesService', function($scope, $http, myMoviesService) {
 
     $scope.isLoading = false;
 
@@ -43,8 +28,8 @@ angular.module('myApp.controllers', ['localStorage']).
       $http.get(urlserver)
         .success(function(data) {
           for (var i = data.length - 1; i >= 0; i--) {
-            data[i].my_status = getStatusMovie(data[i].imdb_id);
-            data[i].my_rating = getRatingMovie(data[i].imdb_id);
+            data[i].my_status = myMoviesService.getStatus(data[i].imdb_id);
+            data[i].my_rating = myMoviesService.getRating(data[i].imdb_id);
           }
           $scope.movies = data;
           $scope.isLoading = false;
@@ -55,41 +40,19 @@ angular.module('myApp.controllers', ['localStorage']).
     };
 
     $scope.changeStatusMovie = function(idMovie, status){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      if(lsMovies[idMovie]){
-        lsMovies[idMovie].my_status = status;
-      }else{
-        lsMovies[idMovie] = {my_status: status, my_rating: 0};
-      }
-      $store.set('lsMyMoviesABC', lsMovies);
+      myMoviesService.changeStatus(idMovie, status);
 
-      for (var i = $scope.movies.length - 1; i >= 0; i--) {
+      for (var i = $scope.movies.length - 1; i >= 0; i--){
         if($scope.movies[i].imdb_id == idMovie){
           $scope.movies[i].my_status = status;
         }
       }
     };
-
   }])
 
-  .controller('MyMoviesCtrl', ['$scope', '$http', '$store', function($scope, $http, $store) {
+  .controller('MyMoviesCtrl', ['$scope', '$http', 'myMoviesService', function($scope, $http, myMoviesService) {
 
-    var getStatusMovie = function(idMovie){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      var current = lsMovies.hasOwnProperty(idMovie) ? lsMovies[idMovie].my_status : null;
-      return current ? current : 0;
-    };
-
-    var getRatingMovie = function(idMovie){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      var current = lsMovies.hasOwnProperty(idMovie) ? lsMovies[idMovie].my_rating : null;
-      return current ? current : 0;
-    };
-
-    if($store.get('lsMyMoviesABC') === null)
-      $store.set('lsMyMoviesABC', {});
-
-    var ids = $store.get('lsMyMoviesABC');
+    var ids = myMoviesService.getAllMy();
     var myMovies = '';
     for (var prop in ids) {
       if (ids.hasOwnProperty(prop)) {
@@ -103,8 +66,8 @@ angular.module('myApp.controllers', ['localStorage']).
     $http.get(urlserver)
       .success(function(data) {
         for (var i = data.length - 1; i >= 0; i--) {
-          data[i].my_status = getStatusMovie(data[i].imdb_id);
-          data[i].my_rating = getRatingMovie(data[i].imdb_id);
+          data[i].my_status = myMoviesService.getStatus(data[i].imdb_id);
+          data[i].my_rating = myMoviesService.getRating(data[i].imdb_id);
         }
         $scope.mymovies = data;
         $scope.isLoading = false;
@@ -118,21 +81,13 @@ angular.module('myApp.controllers', ['localStorage']).
     };
 
     $scope.getStatusMovie = function(idMovie){
-       var lsMovies = $store.get('lsMyMoviesABC');
-       var current = lsMovies[idMovie].my_status;
-       return current ? current : 0;
+       return myMoviesService.getStatus(idMovie);
     };
 
     $scope.changeRating = function(idMovie, stars){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      if(lsMovies[idMovie]){
-        lsMovies[idMovie].my_rating = stars;
-      }else{
-        lsMovies[idMovie] = {my_status: 0, my_rating: stars};
-      }
-      $store.set('lsMyMoviesABC', lsMovies);
+      myMoviesService.changeRating(idMovie, stars);
 
-      for (var i = $scope.mymovies.length - 1; i >= 0; i--) {
+      for (var i = $scope.mymovies.length - 1; i >= 0; i--){
         if($scope.mymovies[i].imdb_id == idMovie){
           $scope.mymovies[i].my_rating = stars;
         }
@@ -140,14 +95,9 @@ angular.module('myApp.controllers', ['localStorage']).
     };
 
     $scope.changeStatusMovie = function(idMovie, status){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      if(lsMovies[idMovie]){
-        lsMovies[idMovie].my_status = status;
-      }else{
-        lsMovies[idMovie] = {my_status: status, my_rating: 0};
-      }
-      $store.set('lsMyMoviesABC', lsMovies);
-      for (var i = $scope.mymovies.length - 1; i >= 0; i--) {
+      myMoviesService.changeStatus(idMovie, status);
+
+      for (var i = $scope.mymovies.length - 1; i >= 0; i--){
         if($scope.mymovies[i].imdb_id == idMovie){
           $scope.mymovies[i].my_status = status;
         }
@@ -155,18 +105,12 @@ angular.module('myApp.controllers', ['localStorage']).
     };
 
     $scope.removeMovie = function(idMovie){
-      var lsMovies = $store.get('lsMyMoviesABC');
-      if(lsMovies.hasOwnProperty(idMovie)){
-        delete lsMovies[idMovie];
-      }
-      $store.set('lsMyMoviesABC', lsMovies);
+      myMoviesService.remove(idMovie);
 
-      for (var i = $scope.mymovies.length - 1; i >= 0; i--) {
+      for (var i = $scope.mymovies.length - 1; i >= 0; i--){
         if($scope.mymovies[i].imdb_id == idMovie){
           $scope.mymovies.splice(i, 1);
-          break;
         }
       }
     };
-
   }]);
