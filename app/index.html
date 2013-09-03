@@ -18,8 +18,8 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li ng-class="munuActive.allmovies"><a ng-click="setMenu('allmovies')" href="#/allmovies">Movies</a></li>
-          <li ng-class="munuActive.mymovies" ><a ng-click="setMenu('mymovies')" href="#/mymovies">My Movies</a></li>
+          <li ng-class="{active: munuActive=='allmovies'}"><a ng-click="munuActive='allmovies'" href="#/allmovies">Movies</a></li>
+          <li ng-class="{active: munuActive=='mymovies'}"><a ng-click="munuActive='mymovies'" href="#/mymovies">My Movies</a></li>
         </ul>
       </div>
     </div>

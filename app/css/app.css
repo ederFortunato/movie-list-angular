@@ -18,6 +18,9 @@ body {
 
 }
 
+.navbar-status-movies input[type="radio"]{
+  display: none;
+}
 
 
 .rating {

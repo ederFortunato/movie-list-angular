@@ -3,14 +3,15 @@
   <div class="col-lg-12">
     <div class="navbar navbar-inverse navbar-default">
       <div class="navbar-form">
-        <div class="btn-group" >
-          <label class="btn btn-default">
+        <div class="btn-group navbar-status-movies" >
+          <label class="btn btn-default" ng-class="{active: filterMovie.my_status==''}">
             <input type="radio" ng-model="filterMovie.my_status" value=""> All
           </label>
-          <label class="btn btn-default">
+
+          <label class="btn btn-default" ng-class="{active: filterMovie.my_status=='1'}">
             <input type="radio" ng-model="filterMovie.my_status" value="1"> Watched
           </label>
-          <label class="btn btn-default">
+          <label class="btn btn-default"ng-class="{active: filterMovie.my_status=='2'}">
             <input type="radio" ng-model="filterMovie.my_status" value="2"> Want Watch
           </label>
         </div>

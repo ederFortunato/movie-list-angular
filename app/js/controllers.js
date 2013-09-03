@@ -5,16 +5,9 @@
 angular.module('myApp.controllers', ['localStorage']).
 
   controller('MenuCtrl',  ['$scope', '$location', function($scope, $location) {
-    $scope.setMenu = function(menu){
-        $scope.munuActive = {'allmovies': '','mymovies': ''};
-        $scope.munuActive[menu] = 'active';
-    };
-
     var current = $location.path();
     current = current.substr(1, current.length-1);
-
-    $scope.setMenu(current);
-
+    $scope.munuActive = current;
   }])
 
   .controller('AllMoviesCtrl',  ['$scope', '$http', 'myMoviesService', function($scope, $http, myMoviesService) {
@@ -51,6 +44,7 @@ angular.module('myApp.controllers', ['localStorage']).
   }])
 
   .controller('MyMoviesCtrl', ['$scope', '$http', 'myMoviesService', function($scope, $http, myMoviesService) {
+    $scope.filterMovie = {my_status: ''};
 
     var ids = myMoviesService.getAllMy();
     var myMovies = '';
@@ -92,6 +86,7 @@ angular.module('myApp.controllers', ['localStorage']).
           $scope.mymovies[i].my_rating = stars;
         }
       }
+
     };
 
     $scope.changeStatusMovie = function(idMovie, status){
