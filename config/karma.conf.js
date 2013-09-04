@@ -1,9 +1,6 @@
-module.exports = function (config) {
-  config.set({
+module.exports = function(config){
+    config.set({
     basePath : '../',
-
-    // Fix for "JASMINE is not supported anymore" warning
-    frameworks : ["jasmine"],
 
     files : [
       'app/lib/angular/angular.js',
@@ -15,12 +12,20 @@ module.exports = function (config) {
 
     autoWatch : true,
 
+    frameworks: ['jasmine'],
+
     browsers : ['Chrome'],
 
+    plugins : [
+            'karma-junit-reporter',
+            'karma-chrome-launcher',
+            'karma-firefox-launcher',
+            'karma-jasmine'
+            ],
+
     junitReporter : {
-      outputFile : 'test_out/unit.xml',
-      suite      : 'unit'
-      //...
+      outputFile: 'test_out/unit.xml',
+      suite: 'unit'
     }
-  });
-};
+
+})}

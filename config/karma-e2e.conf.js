@@ -1,32 +1,36 @@
-module.exports = function (config) {
-  config.set({
+module.exports = function(config){
+    config.set({
+
+
     basePath : '../',
 
-    // Fix for "JASMINE is not supported anymore" warning
-    frameworks : ["jasmine"],
-
     files : [
-      'app/lib/angular/angular.js',
-      'app/lib/angular/angular-*.js',
-      'test/lib/angular/angular-mocks.js',
-      'app/js/**/*.js',
-      'test/unit/**/*.js'
+        'test/e2e/**/*.js'
     ],
 
-    autoWatch : true,
+    autoWatch : false,
 
     browsers : ['Chrome'],
 
-	singleRun = true,
+    frameworks: ['ng-scenario'],
 
-	proxies = {
-	  '/': 'http://localhost:8000/'
-	},
+    singleRun : true,
+
+    proxies : {
+      '/': 'http://localhost:8000/'
+    },
+
+    plugins : [
+            'karma-junit-reporter',
+            'karma-chrome-launcher',
+            'karma-firefox-launcher',
+            'karma-jasmine',
+            'karma-ng-scenario'
+            ],
 
     junitReporter : {
-      outputFile : 'test_out/e2e.xml',
-      suite      : 'e2e'
-      //...
+      outputFile: 'test_out/e2e.xml',
+      suite: 'e2e'
     }
-  });
-};
+
+})}
