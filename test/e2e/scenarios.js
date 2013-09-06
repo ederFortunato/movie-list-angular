@@ -9,36 +9,36 @@ describe('my app', function() {
   });
 
 
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-    expect(browser().location().url()).toBe("/view1");
+  it('should automatically redirect to /allmovies when location hash/fragment is empty', function() {
+    expect(browser().location().url()).toBe("/allmovies");
   });
 
 
-  describe('view1', function() {
+  describe('All Movies', function() {
 
     beforeEach(function() {
-      browser().navigateTo('#/view1');
+      browser().navigateTo('#/allmovies');
     });
 
 
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 1/);
+    it('should render allmovies when user navigates to /allmovies', function() {
+      expect(element('[ng-view] h2:first').text()).
+        toMatch(/All Movies/);
     });
 
   });
 
 
-  describe('view2', function() {
+  describe('My Movies', function() {
 
     beforeEach(function() {
-      browser().navigateTo('#/view2');
+      browser().navigateTo('#/mymovies');
     });
 
 
-    it('should render view2 when user navigates to /view2', function() {
-      expect(element('[ng-view] p:first').text()).
-        toMatch(/partial for view 2/);
+    it('should render mymovies when user navigates to /mymovies', function() {
+      expect(element('[ng-view] h2:first').text()).
+        toMatch(/My Movies/);
     });
 
   });

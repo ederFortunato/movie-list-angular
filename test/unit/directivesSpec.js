@@ -1,19 +1,33 @@
 'use strict';
 
 /* jasmine specs for directives go here */
-
+/*
 describe('directives', function() {
+
+  var element, scope;
+
   beforeEach(module('myApp.directives'));
 
-  describe('app-version', function() {
+  describe('stComboStatus', function() {
     it('should print current version', function() {
-      module(function($provide) {
-        $provide.value('version', 'TEST_VER');
-      });
+
       inject(function($compile, $rootScope) {
-        var element = $compile('<span app-version></span>')($rootScope);
+
+        element = angular.element('<div st-combo-status="1"
+                                    st-combo-id-movie="1"
+                                    st-combo-on-change="changeStatusMovie(idMovie, status)"></div>');
+
+        scope = $rootScope;
+
+
+        $compile(element)(scope);
+        scope.$digest();
+
+
+ 
         expect(element.text()).toEqual('TEST_VER');
       });
     });
   });
 });
+*/
