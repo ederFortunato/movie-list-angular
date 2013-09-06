@@ -2,18 +2,24 @@
 
 /* Services */
 
-
+var SERVER = 'http://localhost/html/angular/movie-list-angular/app/';
 // Demonstrate how to register services
 // In this case it is a simple value service.
 angular.module('myApp.services', ['localStorage']).
   service('myMoviesService', function($store) {
     var _self = this;
+    var ID_STORAGE = '';
 
-    if($store.get('lsMyMoviesABC') === null)
-      $store.set('lsMyMoviesABC', {});
+    this.setStorageID = function(id){
+      ID_STORAGE = id;
+      if($store.get(ID_STORAGE) === null)
+        $store.set(ID_STORAGE, {});
+    };
+
+    this.setStorageID('lsMovies123');
 
     this.getAllMy = function() {
-        return $store.get('lsMyMoviesABC');
+        return $store.get(ID_STORAGE);
     };
 
     this.getAllIDs = function() {
@@ -46,7 +52,7 @@ angular.module('myApp.services', ['localStorage']).
       }else{
         lsMovies[idMovie] = {my_status: 0, my_rating: stars};
       }
-      $store.set('lsMyMoviesABC', lsMovies);
+      $store.set(ID_STORAGE, lsMovies);
     };
 
     this.changeStatus = function(idMovie, status){
@@ -56,20 +62,20 @@ angular.module('myApp.services', ['localStorage']).
       }else{
         lsMovies[idMovie] = {my_status: status, my_rating: 0};
       }
-      $store.set('lsMyMoviesABC', lsMovies);
+      $store.set(ID_STORAGE, lsMovies);
     };
 
     this.remove = function(idMovie){
-      var lsMovies = $store.get('lsMyMoviesABC');
+      var lsMovies = $store.get(ID_STORAGE);
       if(lsMovies.hasOwnProperty(idMovie)){
         delete lsMovies[idMovie];
       }
-      $store.set('lsMyMoviesABC', lsMovies);
+      $store.set(ID_STORAGE, lsMovies);
     };
   })
   .service('imdbService', ['$http', '$store', 'myMoviesService', function($http, $store, myMoviesService) {
     this.findMovies = function(args){
-      var urlserver = 'server/proxy.php?q=' + args.q;
+      var urlserver = SERVER + 'server/proxy.php?q=' + args.q;
       $http.get(urlserver)
         .success(function(data) {
           for (var i = data.length - 1; i >= 0; i--) {
@@ -84,7 +90,7 @@ angular.module('myApp.services', ['localStorage']).
     };
 
     this.getMovies = function(args){
-      var urlserver = 'server/proxy.php?ids=' + args.ids;
+      var urlserver = SERVER + 'server/proxy.php?ids=' + args.ids;
       $http.get(urlserver)
         .success(function(data) {
           for (var i = data.length - 1; i >= 0; i--) {
