@@ -20,6 +20,14 @@ angular.module('myApp.controllers', ['localStorage']).
         success: function(data){
           $scope.movies = data;
           $scope.isLoading = false;
+          $('.gallery-movie-poster').popover({
+            html: true,
+            trigger: 'click',
+            content: function(){
+              return $('#movie-info-' + $(this).data('movie')).html();
+            }
+          });
+
         },
         error: function(data){
           $scope.isLoading = false;
@@ -28,6 +36,18 @@ angular.module('myApp.controllers', ['localStorage']).
 
       $scope.isLoading = true;
       imdbService.findMovies(parans);
+    };
+
+    $scope.popupInfoMovie = function(idMovie, type){
+      $('#movie-poster-' + idMovie).popover({
+        html: true,
+        trigger: 'manual',
+        delay: { show: 0, hide: 500 },
+        content: function(){
+          return $('#movie-info-' + idMovie).html();
+        }
+      }).popover(type);
+
     };
 
     $scope.changeStatusMovie = function(idMovie, status){

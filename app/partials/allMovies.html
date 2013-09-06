@@ -23,19 +23,43 @@
 
 <div class="row gallery-movie" ng-hide="isLoading">
   <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"  ng-repeat="movie in movies">
-    <div class="thumbnail">
 
-      <img class="gallery-movie-poster" ng-src="{{movie.poster.cover}}" alt="poster">
+
+<div class="panel panel-default"> 
+<div class="panel-heading">
+      <div class="thumbnail">
+
+      <img id="movie-poster-{{movie.imdb_id}}" class="gallery-movie-poster" ng-src="{{movie.poster.cover}}" alt="poster" data-container="body" data-toggle="tooltip" title="{{movie.title}} ({{movie.year}})" ng-mouseover="popupInfoMovie(movie.imdb_id, 'show')" ng-mouseleave="popupInfoMovie(movie.imdb_id, 'hide')"  >
+    </div>
+    </div>
+
+  <div class="panel-body">
+      <div id="movie-info-{{movie.imdb_id}}" class="hide">
+        <div>
+          <div>
+            <strong>Your Rating:</strong>
+            <span class="glyphicon" ng-class="{'glyphicon-star': movie.my_rating>1}"></span>
+            <span class="glyphicon" ng-class="{'glyphicon-star': movie.my_rating>2}"></span>
+            <span class="glyphicon" ng-class="{'glyphicon-star': movie.my_rating>3}"></span>
+            <span class="glyphicon" ng-class="{'glyphicon-star': movie.my_rating>4}"></span>
+            <span class="glyphicon" ng-class="{'glyphicon-star': movie.my_rating>5}"></span>
+          </div>
+          <div><strong>Diretor:</strong> {{movie.directors.join(', ')}}</div>
+          <div><strong>Writers:</strong> {{movie.writers.join(', ')}}</div>
+          <div><strong>Genres:</strong> {{movie.genres.join(', ')}}</div>
+          <div><strong>Plot:</strong> {{movie.plot_simple}}</div>
+        </div>
+      </div>
 
       <div class="caption">
         <strong class="gallery-movie-title">{{movie.title}} ({{movie.year}})</strong>
-        <p>Director: {{movie.directors[0]}}</p>
         <hr>
         <div st-combo-status="{{movie.my_status}}" st-combo-id-movie="{{movie.imdb_id}}" st-combo-on-change="changeStatusMovie(idMovie, status)"></div>
       </div>
     </div>
+
   </div>
 </div>
-
-<hr><hr>
-
+  </div>
+</div>
+<hr>
